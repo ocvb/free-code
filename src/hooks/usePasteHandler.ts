@@ -142,7 +142,6 @@ export function usePasteHandler({
                 .filter(line => line.trim())
               imagePaths = lines.filter(line => isImageFilePath(line))
             }
-
             if (onImagePaste && imagePaths.length > 0) {
               const isTempScreenshot =
                 /\/TemporaryItems\/.*screencaptureui.*\/Screenshot/i.test(

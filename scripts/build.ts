@@ -127,6 +127,7 @@ const externals = [
   'image-processor-napi',
   'modifiers-napi',
   'url-handler-napi',
+  'sharp',
 ]
 
 const defines = {
