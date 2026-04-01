@@ -6,7 +6,7 @@ class FreeCode < Formula
   license :cannot_represent
   version "2.1.87-free.1"
 
-  depends_on "bun"
+  depends_on "oven-sh/bun/bun"
 
   def install
     system "bun", "install"
