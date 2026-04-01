@@ -217,8 +217,13 @@ export async function getImageFromClipboard(): Promise<ImageWithDimensions | nul
       imageBuffer[0] === 0x42 &&
       imageBuffer[1] === 0x4d
     ) {
-      const sharp = await getImageProcessor()
-      imageBuffer = await sharp(imageBuffer).png().toBuffer()
+      try {
+        const sharp = await getImageProcessor()
+        imageBuffer = await sharp(imageBuffer).png().toBuffer()
+      } catch {
+        // sharp unavailable — skip BMP conversion, API will reject it
+        return null
+      }
     }
 
     // Resize if needed to stay under 5MB API limit
@@ -396,8 +401,13 @@ export async function tryReadImageFromPath(
     imageBuffer[0] === 0x42 &&
     imageBuffer[1] === 0x4d
   ) {
-    const sharp = await getImageProcessor()
-    imageBuffer = await sharp(imageBuffer).png().toBuffer()
+    try {
+      const sharp = await getImageProcessor()
+      imageBuffer = await sharp(imageBuffer).png().toBuffer()
+    } catch {
+      // sharp unavailable — skip BMP conversion
+      return null
+    }
   }
 
   // Resize if needed to stay under 5MB API limit

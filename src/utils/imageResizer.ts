@@ -178,8 +178,18 @@ export async function maybeResizeAndDownsampleImageBuffer(
     // that the API rejects with `image cannot be empty`.
     throw new ImageResizeError('Image file is empty (0 bytes)')
   }
+  let sharp: Awaited<ReturnType<typeof getImageProcessor>>
   try {
-    const sharp = await getImageProcessor()
+    sharp = await getImageProcessor()
+  } catch {
+    // sharp unavailable (e.g., compiled binary can't resolve native module).
+    // Fall back: return the raw buffer as-is. The API limit is 5MB base64
+    // (~3.75MB raw). If the image exceeds that, the API will reject it, but
+    // at least the paste won't hang.
+    const mediaType = ext === 'jpg' ? 'jpeg' : ext
+    return { buffer: imageBuffer, mediaType }
+  }
+  try {
     const image = sharp(imageBuffer)
     const metadata = await image.metadata()
 
