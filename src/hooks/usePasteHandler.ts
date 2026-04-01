@@ -123,11 +123,25 @@ export function usePasteHandler({
             // - Unix: space followed by `/` (e.g., `/Users/...`)
             // - Windows: space followed by drive letter and `:\` (e.g., `C:\Users\...`)
             // This works because spaces within paths are escaped (e.g., `file\ name.png`)
-            const lines = pastedText
-              .split(/ (?=\/|[A-Za-z]:\\)/)
-              .flatMap(part => part.split('\n'))
-              .filter(line => line.trim())
-            const imagePaths = lines.filter(line => isImageFilePath(line))
+            // First, try the entire pasted text as a single image path.
+            // This handles paths with spaces (e.g., "/Users/x/Resource Example.png")
+            // that would be incorrectly split by the multi-path splitter below.
+            const trimmedPaste = pastedText.trim()
+            let lines: string[]
+            let imagePaths: string[]
+            if (isImageFilePath(trimmedPaste)) {
+              lines = [trimmedPaste]
+              imagePaths = [trimmedPaste]
+            } else {
+              // Split on spaces preceding absolute paths for multi-image paste:
+              // - Unix: space followed by `/` (e.g., `/Users/...`)
+              // - Windows: space followed by drive letter and `:\` (e.g., `C:\Users\...`)
+              lines = pastedText
+                .split(/ (?=\/|[A-Za-z]:\\)/)
+                .flatMap(part => part.split('\n'))
+                .filter(line => line.trim())
+              imagePaths = lines.filter(line => isImageFilePath(line))
+            }
 
             if (onImagePaste && imagePaths.length > 0) {
               const isTempScreenshot =
@@ -230,13 +244,13 @@ export function usePasteHandler({
     // This batching number is not consistent.
 
     // Handle potential image filenames (even if they're shorter than paste threshold)
-    // When dragging multiple images, they may come as newline-separated or
-    // space-separated paths. Split on spaces preceding absolute paths:
-    // - Unix: ` /` - Windows: ` C:\` etc.
-    const hasImageFilePath = input
-      .split(/ (?=\/|[A-Za-z]:\\)/)
-      .flatMap(part => part.split('\n'))
-      .some(line => isImageFilePath(line.trim()))
+    // Check the whole input first (handles paths with spaces like "Resource Example.png"),
+    // then fall back to splitting for multi-image paste.
+    const hasImageFilePath = isImageFilePath(input.trim()) ||
+      input
+        .split(/ (?=\/|[A-Za-z]:\\)/)
+        .flatMap(part => part.split('\n'))
+        .some(line => isImageFilePath(line.trim()))
 
     // Handle empty paste or binary/non-text paste (clipboard image on macOS)
     // When the user pastes an image with Cmd+V, the terminal may send:
