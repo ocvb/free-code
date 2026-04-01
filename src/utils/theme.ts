@@ -613,7 +613,7 @@ const oledTheme: Theme = {
   autoAccept: 'rgb(190,150,255)',
   bashBorder: 'rgb(253,93,177)',
   claude: 'rgb(225,130,97)',
-  startupAccent: 'rgb(184,225,174)',
+  startupAccent: 'rgb(255,200,140)', // Warm golden peach
   claudeShimmer: 'rgb(245,170,137)',
   claudeBlue_FOR_SYSTEM_SPINNER: 'rgb(157,175,255)',
   claudeBlueShimmer_FOR_SYSTEM_SPINNER: 'rgb(187,205,255)',
@@ -652,7 +652,7 @@ const oledTheme: Theme = {
   cyan_FOR_SUBAGENTS_ONLY: 'rgb(18,155,188)',
   professionalBlue: 'rgb(116,165,214)',
   chromeYellow: 'rgb(251,198,14)',
-  clawd_body: 'rgb(184,225,174)',
+  clawd_body: 'rgb(255,200,140)', // Match startupAccent
   clawd_background: 'rgb(0,0,0)',
   userMessageBackground: 'rgb(18,18,18)',
   userMessageBackgroundHover: 'rgb(30,30,30)',
