@@ -2,7 +2,7 @@ class FreeCode < Formula
   desc "Unbundled Claude Code CLI — all features unlocked, no telemetry"
   homepage "https://github.com/ocvb/free-code"
   url "https://github.com/ocvb/free-code/archive/refs/tags/v2.1.87-free.1.tar.gz"
-  sha256 "432efd42fd2f9c2f87af6ac5df7eadc72b5d2d4016445148eae9ec78d7036624"
+  sha256 "87f474f64a89ce287b7aeedf9de4ec0bebfc7466b67563265705458b96fc2bfe"
   license :cannot_represent
   version "2.1.87-free.1"
 
