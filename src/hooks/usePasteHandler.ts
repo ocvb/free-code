@@ -238,15 +238,23 @@ export function usePasteHandler({
       .flatMap(part => part.split('\n'))
       .some(line => isImageFilePath(line.trim()))
 
-    // Handle empty paste (clipboard image on macOS)
-    // When the user pastes an image with Cmd+V, the terminal sends an empty
-    // bracketed paste sequence. The keypress parser emits this as isPasted=true
-    // with empty input.
-    if (isFromPaste && input.length === 0 && isMacOS && onImagePaste) {
-      checkClipboardForImage()
-      // Reset isPasting since there's no text content to process
-      setIsPasting(false)
-      return
+    // Handle empty paste or binary/non-text paste (clipboard image on macOS)
+    // When the user pastes an image with Cmd+V, the terminal may send:
+    // 1. An empty bracketed paste sequence (input.length === 0)
+    // 2. Binary gibberish or a short non-text representation
+    // In both cases, check the clipboard for an image directly.
+    if (isFromPaste && isMacOS && onImagePaste) {
+      const looksLikeBinaryOrEmpty =
+        input.length === 0 ||
+        // Short paste with non-printable characters suggests binary clipboard data
+        (input.length < PASTE_THRESHOLD &&
+          // eslint-disable-next-line no-control-regex
+          /[\x00-\x08\x0E-\x1A]/.test(input))
+      if (looksLikeBinaryOrEmpty) {
+        checkClipboardForImage()
+        setIsPasting(false)
+        return
+      }
     }
 
     // Check if we should handle as paste (from bracketed paste, large input, or continuation)
