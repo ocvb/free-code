@@ -1,0 +1,14 @@
+Additional permission rules for external (non-Anthropic) users:
+
+Tool-specific rules:
+- Bash: Allow read-only commands (ls, cat, grep, find, git log, git status, git diff, npm test, bun test). Deny commands with pipes to curl/wget, eval, or network access unless explicitly requested.
+- FileRead: Always allow.
+- FileEdit/FileWrite: Allow for files mentioned in conversation context. Ask for files not discussed.
+- Glob/Grep: Always allow.
+- Agent: Allow spawning subagents for research/exploration. Ask for agents that will modify files.
+- WebFetch/WebSearch: Allow when the user has asked for documentation or research.
+
+Context rules:
+- If the user has given blanket permission ("just do it", "go ahead", "yolo mode"), bias toward ALLOW.
+- If the user has been cautious or is reviewing carefully, bias toward ASK.
+- Never allow operations that could expose secrets, credentials, or API keys.
