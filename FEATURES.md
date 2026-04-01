@@ -1,13 +1,12 @@
 # Feature Flags Audit
 
-Audit date: 2026-03-31
+Audit date: 2026-04-01 (updated from 2026-03-31)
 
 This repository currently references 88 `feature('FLAG')` compile-time flags.
-I re-checked them by bundling the CLI once per flag on top of the current
-external-build defines and externals. Result:
+Re-checked after reconstruction pass on 2026-04-01. Result:
 
-- 54 flags bundle cleanly in this snapshot
-- 34 flags still fail to bundle
+- 70 flags bundle cleanly (54 original + 16 reconstructed)
+- 18 flags still fail to bundle (15 medium + 3 large subsystems)
 
 Important: "bundle cleanly" does not always mean "runtime-safe". Some flags
 still depend on optional native modules, claude.ai OAuth, GrowthBook gates, or
@@ -192,63 +191,57 @@ have meaningful runtime caveats:
   Bundles cleanly, but only does useful work when team-memory config/files are
   actually enabled in the environment.
 
-## Broken Flags With Easy Reconstruction Paths
+## Reconstructed Feature Flags (Stub Implementations)
 
-These are the failed flags where the current blocker looks small enough that a
-focused reconstruction pass could probably restore them without rebuilding an
-entire subsystem.
+These 16 flags were previously broken due to missing source files. They now
+compile cleanly as stub or partial implementations. Some are no-ops (telemetry
+stubs), some are functional (AUTO_THEME, MCP_SKILLS, TRANSCRIPT_CLASSIFIER),
+and some are placeholders that print "not available" messages (BUDDY, FORK,
+BG_SESSIONS, TEMPLATES, TORCH). All are included in `build:dev:full`.
+
+Reconstructed 2026-04-01.
 
 - `AUTO_THEME`
-  Fails on missing `src/utils/systemThemeWatcher.js`. `systemTheme.ts` and the
-  theme provider already contain the cache/parsing logic, so the missing piece
-  looks like the OSC 11 watcher only.
+  OSC 11 terminal background color watcher. Polls every 5s and updates the
+  theme when it detects a change. Functional.
 - `BG_SESSIONS`
-  Fails on missing `src/cli/bg.js`. The CLI fast-path dispatch in
-  `src/entrypoints/cli.tsx` is already wired.
+  Background session management (ps/logs/attach/kill). Stub — prints "not
+  available" messages.
 - `BUDDY`
-  Fails on missing `src/commands/buddy/index.js`. The buddy UI components and
-  prompt-input hooks already exist.
+  Buddy pair-programming command. Stub.
 - `BUILDING_CLAUDE_APPS`
-  Fails on missing `src/claude-api/csharp/claude-api.md`. This looks like an
-  asset/document gap, not a missing runtime subsystem.
+  Claude API documentation skill. Reconstructed with C# docs and stubs for
+  all 26 language/topic markdown files.
 - `COMMIT_ATTRIBUTION`
-  Fails on missing `src/utils/attributionHooks.js`. Setup and cache-clear code
-  already call into that hook module.
+  Attribution lifecycle hooks. No-op stubs (registerAttributionHooks,
+  clearAttributionCaches, sweepFileContentCache).
 - `FORK_SUBAGENT`
-  Fails on missing `src/commands/fork/index.js`. Command slot and message
-  rendering support are already present.
+  Fork conversation into a new subagent. Stub command.
 - `HISTORY_SNIP`
-  Fails on missing `src/commands/force-snip.js`. The surrounding SnipTool and
-  query/message comments are already there.
+  Manual history snip command and SnipTool. Functional skeleton — the
+  underlying snipCompact is a no-op in this snapshot but the command,
+  tool, and prompt all wire correctly.
 - `KAIROS_GITHUB_WEBHOOKS`
-  Fails on missing `src/tools/SubscribePRTool/SubscribePRTool.js`. The command
-  slot and some message handling already exist.
+  PR webhook subscription tool and command. Disabled stub (requires
+  Kairos backend).
 - `KAIROS_PUSH_NOTIFICATION`
-  Fails on missing `src/tools/PushNotificationTool/PushNotificationTool.js`.
-  The tool slot already exists in `src/tools.ts`.
+  Push notification tool. Disabled stub (requires Kairos backend).
 - `MCP_SKILLS`
-  Fails on missing `src/skills/mcpSkills.js`. `mcpSkillBuilders.ts` already
-  exists specifically to support that missing registry layer.
+  Load skills from MCP server resources. Functional — queries MCP servers
+  for skill:// resources and registers them as commands.
 - `MEMORY_SHAPE_TELEMETRY`
-  Fails on missing `src/memdir/memoryShapeTelemetry.js`. The hook call sites
-  are already in place in `sessionFileAccessHooks.ts`.
+  Memory access pattern telemetry. No-op stubs (telemetry stripped).
 - `OVERFLOW_TEST_TOOL`
-  Fails on missing `src/tools/OverflowTestTool/OverflowTestTool.js`. This
-  appears isolated and test-only.
+  Dev/test tool for generating large output. Functional.
 - `RUN_SKILL_GENERATOR`
-  Fails on missing `src/runSkillGenerator.js`. The bundled skill registration
-  path already expects it.
+  Interactive skill creation bundled skill. Functional.
 - `TEMPLATES`
-  Fails on missing `src/cli/handlers/templateJobs.js`. The CLI fast-path is
-  already wired in `src/entrypoints/cli.tsx`.
+  Template job CLI commands (new/list/reply). Stub.
 - `TORCH`
-  Fails on missing `src/commands/torch.js`. This looks like a single command
-  entry gap.
+  Aggressive conversation reset command. Stub — directs to /clear.
 - `TRANSCRIPT_CLASSIFIER`
-  The first hard failure is missing
-  `src/utils/permissions/yolo-classifier-prompts/auto_mode_system_prompt.txt`.
-  The classifier engine, parser, and settings plumbing already exist, so the
-  missing prompt/assets are likely the first reconstruction target.
+  Auto-mode permission classifier prompts. Functional — provides system
+  prompt and external permission rules for YOLO mode.
 
 ## Broken Flags With Partial Wiring But Medium-Sized Gaps
 
