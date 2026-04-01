@@ -92,6 +92,8 @@ export type Theme = {
 export const THEME_NAMES = [
   'dark',
   'light',
+  'oled',
+  'rainbow',
   'light-daltonized',
   'dark-daltonized',
   'light-ansi',
@@ -602,10 +604,169 @@ const darkDaltonizedTheme: Theme = {
   rainbow_violet_shimmer: 'rgb(230,180,210)',
 }
 
+/**
+ * OLED theme — pure black backgrounds for AMOLED/OLED displays.
+ * Based on dark theme with all backgrounds pushed to #000 and
+ * slightly boosted foreground contrast.
+ */
+const oledTheme: Theme = {
+  autoAccept: 'rgb(190,150,255)',
+  bashBorder: 'rgb(253,93,177)',
+  claude: 'rgb(225,130,97)',
+  startupAccent: 'rgb(184,225,174)',
+  claudeShimmer: 'rgb(245,170,137)',
+  claudeBlue_FOR_SYSTEM_SPINNER: 'rgb(157,175,255)',
+  claudeBlueShimmer_FOR_SYSTEM_SPINNER: 'rgb(187,205,255)',
+  permission: 'rgb(187,195,255)',
+  permissionShimmer: 'rgb(217,225,255)',
+  planMode: 'rgb(82,165,155)',
+  ide: 'rgb(81,140,210)',
+  promptBorder: 'rgb(100,100,100)',
+  promptBorderShimmer: 'rgb(140,140,140)',
+  text: 'rgb(255,255,255)',
+  inverseText: 'rgb(0,0,0)',
+  inactive: 'rgb(130,130,130)',
+  inactiveShimmer: 'rgb(170,170,170)',
+  subtle: 'rgb(50,50,50)',
+  suggestion: 'rgb(187,195,255)',
+  remember: 'rgb(187,195,255)',
+  background: 'rgb(0,180,180)',
+  success: 'rgb(88,200,115)',
+  error: 'rgb(255,120,140)',
+  warning: 'rgb(255,200,20)',
+  merged: 'rgb(190,150,255)',
+  warningShimmer: 'rgb(255,230,70)',
+  diffAdded: 'rgb(20,70,30)',
+  diffRemoved: 'rgb(100,25,38)',
+  diffAddedDimmed: 'rgb(40,55,42)',
+  diffRemovedDimmed: 'rgb(70,40,48)',
+  diffAddedWord: 'rgb(56,180,100)',
+  diffRemovedWord: 'rgb(190,95,115)',
+  red_FOR_SUBAGENTS_ONLY: 'rgb(230,50,50)',
+  blue_FOR_SUBAGENTS_ONLY: 'rgb(50,110,245)',
+  green_FOR_SUBAGENTS_ONLY: 'rgb(30,175,85)',
+  yellow_FOR_SUBAGENTS_ONLY: 'rgb(212,148,14)',
+  purple_FOR_SUBAGENTS_ONLY: 'rgb(157,61,244)',
+  orange_FOR_SUBAGENTS_ONLY: 'rgb(244,98,22)',
+  pink_FOR_SUBAGENTS_ONLY: 'rgb(229,49,129)',
+  cyan_FOR_SUBAGENTS_ONLY: 'rgb(18,155,188)',
+  professionalBlue: 'rgb(116,165,214)',
+  chromeYellow: 'rgb(251,198,14)',
+  clawd_body: 'rgb(184,225,174)',
+  clawd_background: 'rgb(0,0,0)',
+  userMessageBackground: 'rgb(18,18,18)',
+  userMessageBackgroundHover: 'rgb(30,30,30)',
+  messageActionsBackground: 'rgb(14,18,26)',
+  selectionBg: 'rgb(25,60,100)',
+  bashMessageBackgroundColor: 'rgb(20,18,20)',
+  memoryBackgroundColor: 'rgb(15,22,26)',
+  rate_limit_fill: 'rgb(187,195,255)',
+  rate_limit_empty: 'rgb(50,53,80)',
+  fastMode: 'rgb(255,130,30)',
+  fastModeShimmer: 'rgb(255,175,80)',
+  briefLabelYou: 'rgb(132,190,242)',
+  briefLabelClaude: 'rgb(225,130,97)',
+  rainbow_red: 'rgb(245,105,97)',
+  rainbow_orange: 'rgb(255,149,97)',
+  rainbow_yellow: 'rgb(255,205,105)',
+  rainbow_green: 'rgb(155,210,140)',
+  rainbow_blue: 'rgb(140,180,230)',
+  rainbow_indigo: 'rgb(165,140,210)',
+  rainbow_violet: 'rgb(210,140,190)',
+  rainbow_red_shimmer: 'rgb(255,165,157)',
+  rainbow_orange_shimmer: 'rgb(255,195,147)',
+  rainbow_yellow_shimmer: 'rgb(255,235,165)',
+  rainbow_green_shimmer: 'rgb(195,240,190)',
+  rainbow_blue_shimmer: 'rgb(190,215,250)',
+  rainbow_indigo_shimmer: 'rgb(205,190,240)',
+  rainbow_violet_shimmer: 'rgb(240,190,220)',
+}
+
+/**
+ * Rainbow theme — a fun, colorful theme where every UI element
+ * gets a different vibrant hue. Dark background with maximum color variety.
+ */
+const rainbowTheme: Theme = {
+  autoAccept: 'rgb(255,105,180)',    // Hot pink
+  bashBorder: 'rgb(255,165,0)',      // Orange
+  claude: 'rgb(255,69,0)',           // Red-orange
+  startupAccent: 'rgb(0,255,127)',   // Spring green
+  claudeShimmer: 'rgb(255,120,50)',
+  claudeBlue_FOR_SYSTEM_SPINNER: 'rgb(0,191,255)', // Deep sky blue
+  claudeBlueShimmer_FOR_SYSTEM_SPINNER: 'rgb(80,220,255)',
+  permission: 'rgb(138,43,226)',     // Blue-violet
+  permissionShimmer: 'rgb(178,103,255)',
+  planMode: 'rgb(0,206,209)',        // Dark turquoise
+  ide: 'rgb(30,144,255)',            // Dodger blue
+  promptBorder: 'rgb(255,215,0)',    // Gold
+  promptBorderShimmer: 'rgb(255,235,80)',
+  text: 'rgb(255,255,255)',
+  inverseText: 'rgb(0,0,0)',
+  inactive: 'rgb(169,169,169)',
+  inactiveShimmer: 'rgb(200,200,200)',
+  subtle: 'rgb(80,80,80)',
+  suggestion: 'rgb(0,255,255)',      // Cyan
+  remember: 'rgb(255,105,180)',      // Hot pink
+  background: 'rgb(255,20,147)',     // Deep pink
+  success: 'rgb(0,255,0)',           // Lime
+  error: 'rgb(255,0,60)',            // Vivid red
+  warning: 'rgb(255,255,0)',         // Yellow
+  merged: 'rgb(186,85,211)',         // Medium orchid
+  warningShimmer: 'rgb(255,255,100)',
+  diffAdded: 'rgb(0,100,0)',
+  diffRemoved: 'rgb(139,0,0)',
+  diffAddedDimmed: 'rgb(50,80,50)',
+  diffRemovedDimmed: 'rgb(100,50,55)',
+  diffAddedWord: 'rgb(50,205,50)',   // Lime green
+  diffRemovedWord: 'rgb(255,99,71)', // Tomato
+  red_FOR_SUBAGENTS_ONLY: 'rgb(255,0,0)',
+  blue_FOR_SUBAGENTS_ONLY: 'rgb(0,100,255)',
+  green_FOR_SUBAGENTS_ONLY: 'rgb(0,200,0)',
+  yellow_FOR_SUBAGENTS_ONLY: 'rgb(255,255,0)',
+  purple_FOR_SUBAGENTS_ONLY: 'rgb(160,32,240)',
+  orange_FOR_SUBAGENTS_ONLY: 'rgb(255,165,0)',
+  pink_FOR_SUBAGENTS_ONLY: 'rgb(255,20,147)',
+  cyan_FOR_SUBAGENTS_ONLY: 'rgb(0,255,255)',
+  professionalBlue: 'rgb(65,105,225)',  // Royal blue
+  chromeYellow: 'rgb(255,215,0)',
+  clawd_body: 'rgb(127,255,0)',      // Chartreuse
+  clawd_background: 'rgb(0,0,0)',
+  userMessageBackground: 'rgb(30,10,40)',  // Deep purple-black
+  userMessageBackgroundHover: 'rgb(45,20,55)',
+  messageActionsBackground: 'rgb(25,15,50)',
+  selectionBg: 'rgb(72,0,120)',      // Deep purple
+  bashMessageBackgroundColor: 'rgb(35,15,10)',
+  memoryBackgroundColor: 'rgb(10,30,35)',
+  rate_limit_fill: 'rgb(255,105,180)',
+  rate_limit_empty: 'rgb(80,20,60)',
+  fastMode: 'rgb(255,69,0)',         // Red-orange
+  fastModeShimmer: 'rgb(255,120,50)',
+  briefLabelYou: 'rgb(0,191,255)',   // Deep sky blue
+  briefLabelClaude: 'rgb(255,69,0)', // Red-orange
+  rainbow_red: 'rgb(255,0,0)',
+  rainbow_orange: 'rgb(255,165,0)',
+  rainbow_yellow: 'rgb(255,255,0)',
+  rainbow_green: 'rgb(0,255,0)',
+  rainbow_blue: 'rgb(0,100,255)',
+  rainbow_indigo: 'rgb(75,0,130)',
+  rainbow_violet: 'rgb(238,130,238)',
+  rainbow_red_shimmer: 'rgb(255,80,80)',
+  rainbow_orange_shimmer: 'rgb(255,200,80)',
+  rainbow_yellow_shimmer: 'rgb(255,255,120)',
+  rainbow_green_shimmer: 'rgb(80,255,80)',
+  rainbow_blue_shimmer: 'rgb(80,160,255)',
+  rainbow_indigo_shimmer: 'rgb(140,80,200)',
+  rainbow_violet_shimmer: 'rgb(255,180,255)',
+}
+
 export function getTheme(themeName: ThemeName): Theme {
   switch (themeName) {
     case 'light':
       return lightTheme
+    case 'oled':
+      return oledTheme
+    case 'rainbow':
+      return rainbowTheme
     case 'light-ansi':
       return lightAnsiTheme
     case 'dark-ansi':

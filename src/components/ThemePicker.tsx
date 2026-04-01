@@ -120,6 +120,12 @@ export function ThemePicker(t0) {
       label: "Light mode",
       value: "light"
     }, {
+      label: "OLED (pure black)",
+      value: "oled"
+    }, {
+      label: "Rainbow (fun mode)",
+      value: "rainbow"
+    }, {
       label: "Dark mode (colorblind-friendly)",
       value: "dark-daltonized"
     }, {

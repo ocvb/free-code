@@ -69,13 +69,23 @@ See [FEATURES.md](FEATURES.md) for the full audit of all 88 flags and their stat
 
 ## Quick install
 
+### Homebrew
+
+```bash
+brew tap ocvb/free-code https://github.com/ocvb/free-code.git
+brew install free-code
+```
+
+### One-liner
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/paoloanzn/free-code/main/install.sh | bash
 ```
 
 This will check your system, install Bun if needed, clone the repo, build the binary with all experimental features enabled, and symlink it as `free-code` on your PATH.
 
-After install, just run:
+### Then run
+
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 free-code
