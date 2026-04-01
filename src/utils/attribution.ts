@@ -65,7 +65,7 @@ export function getAttributionTexts(): AttributionTexts {
   }
 
   const defaultAttribution = `🤖 Generated with [Claude Code](${PRODUCT_URL})`
-  const defaultCommit = `Co-Authored-By: Claude <noreply@anthropic.com>`
+  const defaultCommit = `my little helper :D: Claude <noreply@anthropic.com>`
 
   const settings = getInitialSettings()
 
