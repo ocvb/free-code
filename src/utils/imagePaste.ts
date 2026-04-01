@@ -19,6 +19,8 @@ import {
 } from './imageResizer.js'
 import { logError } from './log.js'
 
+const CLIPBOARD_TIMEOUT_MS = 5_000
+
 // Native NSPasteboard reader. GrowthBook gate tengu_collage_kaleidoscope is
 // a kill switch (default on). Falls through to osascript when off.
 // The gate string is inlined at each callsite INSIDE the feature() condition
@@ -117,7 +119,7 @@ export async function hasImageInClipboard(): Promise<boolean> {
   const result = await execFileNoThrowWithCwd('osascript', [
     '-e',
     'the clipboard as «class PNGf»',
-  ])
+  ], { timeout: CLIPBOARD_TIMEOUT_MS })
   return result.code === 0
 }
 
@@ -189,6 +191,7 @@ export async function getImageFromClipboard(): Promise<ImageWithDimensions | nul
     const checkResult = await execa(commands.checkImage, {
       shell: true,
       reject: false,
+      timeout: CLIPBOARD_TIMEOUT_MS,
     })
     if (checkResult.exitCode !== 0) {
       return null
@@ -198,6 +201,7 @@ export async function getImageFromClipboard(): Promise<ImageWithDimensions | nul
     const saveResult = await execa(commands.saveImage, {
       shell: true,
       reject: false,
+      timeout: CLIPBOARD_TIMEOUT_MS,
     })
     if (saveResult.exitCode !== 0) {
       return null
@@ -249,6 +253,7 @@ export async function getImagePathFromClipboard(): Promise<string | null> {
     const result = await execa(commands.getPath, {
       shell: true,
       reject: false,
+      timeout: CLIPBOARD_TIMEOUT_MS,
     })
     if (result.exitCode !== 0 || !result.stdout) {
       return null
